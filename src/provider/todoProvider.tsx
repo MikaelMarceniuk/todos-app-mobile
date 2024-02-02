@@ -1,5 +1,6 @@
 import { createContext, useContext, useState } from 'react'
 import Todo from '../@types/Todo'
+import { ToastAndroid } from 'react-native'
 
 type IDoneTodoRequest = {
   id: number
@@ -25,6 +26,14 @@ const TodoProvider: React.FC<IProps> = ({ children }) => {
   const [todos, setTodos] = useState<Todo[]>([])
 
   const addTodo = (name: string) => {
+    if (name == '') {
+      ToastAndroid.show(
+        'Coloque o nome da tarefa para poder adicionar.',
+        ToastAndroid.LONG
+      )
+      return false
+    }
+
     setTodos((oldValue) => [
       ...oldValue,
       { id: oldValue.length + 1, name, isDone: false },
