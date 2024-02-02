@@ -1,20 +1,32 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { textColorAction, textColorDisabled } from '../theme/colors'
 import EmptyListWarning from './emptyListWarning'
+import TodoItem from './todoItem'
+import { useTodoContext } from '../provider/todoProvider'
 
-type IProps = {
-  data: any[]
-}
+const TodoList: React.FC = () => {
+  const { todos } = useTodoContext()
 
-const TodoList: React.FC<IProps> = ({ data }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTxt}>Criadas</Text>
         <Text style={styles.headerTxt}>Concluidas</Text>
       </View>
-      <ScrollView style={styles.listContainer}>
-        {data.length == 0 && <EmptyListWarning />}
+      <ScrollView
+        style={[
+          styles.listContainer,
+          todos.length > 0 && { borderTopWidth: 0 },
+        ]}
+      >
+        {todos.length == 0 && <EmptyListWarning />}
+        {todos.length > 0 &&
+          todos.map((td) => (
+            <TodoItem
+              key={td.id}
+              {...td}
+            />
+          ))}
       </ScrollView>
     </View>
   )

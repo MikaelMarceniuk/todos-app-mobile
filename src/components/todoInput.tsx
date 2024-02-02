@@ -7,12 +7,14 @@ import {
   textColor,
   textColorDisabled,
 } from '../theme/colors'
+import { useTodoContext } from '../provider/todoProvider'
 
-type IProps = {}
-
-const TodoInput: React.FC<IProps> = () => {
+const TodoInput: React.FC = () => {
   const [todoValue, setTodoValue] = useState('')
   const [isFocused, setIsFocused] = useState(false)
+  const { addTodo } = useTodoContext()
+
+  const onSubmitHandler = () => addTodo(todoValue) && setTodoValue('')
 
   return (
     <View style={styles.container}>
@@ -28,7 +30,10 @@ const TodoInput: React.FC<IProps> = () => {
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
       />
-      <TouchableOpacity style={styles.btnContainer}>
+      <TouchableOpacity
+        style={styles.btnContainer}
+        onPress={onSubmitHandler}
+      >
         <PlusIcon />
       </TouchableOpacity>
     </View>

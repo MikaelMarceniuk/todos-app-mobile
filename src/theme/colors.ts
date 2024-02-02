@@ -1,5 +1,6 @@
 export const mainColor = '#1A1A1A'
 export const mainColorLight = '#262626'
+export const mainColorLight2 = '#333333'
 export const actionColor = '#1E6F9F'
 export const textColor = '#F2F2F2'
 export const textColorDisabled = '#808080'
