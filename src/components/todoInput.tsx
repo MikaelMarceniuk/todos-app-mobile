@@ -1,6 +1,12 @@
 import { TextInput, TouchableOpacity, View, StyleSheet } from 'react-native'
 import PlusIcon from '../svgs/plus'
 import { useState } from 'react'
+import {
+  actionColor,
+  mainColorLight,
+  textColor,
+  textColorDisabled,
+} from '../theme/colors'
 
 type IProps = {}
 
@@ -13,10 +19,10 @@ const TodoInput: React.FC<IProps> = () => {
       <TextInput
         style={[
           styles.txtInput,
-          { borderColor: isFocused ? '#1E6F9F' : '#262626' },
+          { borderColor: isFocused ? actionColor : mainColorLight },
         ]}
         placeholder="Adicione uma nova tarefa"
-        placeholderTextColor="#808080"
+        placeholderTextColor={textColorDisabled}
         value={todoValue}
         onChangeText={setTodoValue}
         onFocus={() => setIsFocused(true)}
@@ -42,16 +48,16 @@ const styles = StyleSheet.create({
     padding: 16,
 
     flex: 1,
-    backgroundColor: '#262626',
+    backgroundColor: mainColorLight,
     borderRadius: 6,
-    color: '#F2F2F2',
+    color: textColor,
     borderWidth: 1,
   },
   btnContainer: {
     width: 52,
     height: '100%',
 
-    backgroundColor: '#1E6F9F',
+    backgroundColor: actionColor,
     borderRadius: 6,
     justifyContent: 'center',
     alignItems: 'center',

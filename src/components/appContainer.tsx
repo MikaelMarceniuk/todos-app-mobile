@@ -1,5 +1,6 @@
 import { ImageBackground, StatusBar, View, StyleSheet } from 'react-native'
 import LogoIcon from '../svgs/logo'
+import { black, mainColor } from '../theme/colors'
 
 type IProps = {
   children: React.ReactNode
@@ -23,7 +24,7 @@ const AppContainer: React.FC<IProps> = ({ children }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1A1A1A',
+    backgroundColor: mainColor,
   },
   blackBg: {
     width: 375,
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
 
     position: 'absolute',
 
-    backgroundColor: '#000',
+    backgroundColor: black,
     justifyContent: 'center',
     alignItems: 'center',
   },
