@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingHorizontal: 24,
+    paddingTop: 145,
 
     flex: 1,
     gap: 32,

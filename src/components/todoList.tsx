@@ -35,7 +35,7 @@ const TodoList: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    minHeight: 370,
+    flex: 1,
     gap: 20,
   },
   header: {
