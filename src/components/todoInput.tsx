@@ -14,7 +14,8 @@ const TodoInput: React.FC = () => {
   const [isFocused, setIsFocused] = useState(false)
   const { addTodo } = useTodoContext()
 
-  const onSubmitHandler = () => addTodo(todoValue) && setTodoValue('')
+  const onSubmitHandler = async () =>
+    (await addTodo(todoValue)) && setTodoValue('')
 
   return (
     <View style={styles.container}>

@@ -1,6 +1,7 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import Todo from '../@types/Todo'
 import { ToastAndroid } from 'react-native'
+import { getTodos, storeTodos } from '../services/asyncStorageService'
 
 type IDoneTodoRequest = {
   id: number
@@ -9,9 +10,9 @@ type IDoneTodoRequest = {
 
 type ITodoContext = {
   todos: Todo[]
-  addTodo: (name: string) => boolean
-  doneTodo: (data: IDoneTodoRequest) => void
-  removeTodo: (id: number) => void
+  addTodo: (name: string) => Promise<boolean>
+  doneTodo: (data: IDoneTodoRequest) => Promise<boolean>
+  removeTodo: (id: number) => Promise<boolean>
 }
 
 const TodoContext = createContext<ITodoContext>({} as ITodoContext)
@@ -25,7 +26,13 @@ type IProps = {
 const TodoProvider: React.FC<IProps> = ({ children }) => {
   const [todos, setTodos] = useState<Todo[]>([])
 
-  const addTodo = (name: string) => {
+  useEffect(() => {
+    ;(async () => {
+      setTodos(await getTodos())
+    })()
+  }, [])
+
+  const addTodo = async (name: string) => {
     if (name == '') {
       ToastAndroid.show(
         'Coloque o nome da tarefa para poder adicionar.',
@@ -34,25 +41,41 @@ const TodoProvider: React.FC<IProps> = ({ children }) => {
       return false
     }
 
-    setTodos((oldValue) => [
-      ...oldValue,
-      { id: oldValue.length + 1, name, isDone: false },
-    ])
+    const newTodos = [...todos, { id: todos.length + 1, name, isDone: false }]
+
+    if (!(await storeTodos(newTodos))) {
+      ToastAndroid.show('Erro ao salvar todo.', ToastAndroid.LONG)
+      return false
+    }
+
+    setTodos(newTodos)
     return true
   }
 
-  const doneTodo = ({ id, isDone }: IDoneTodoRequest): void => {
-    setTodos((oldValue) =>
-      oldValue.map((td) => (td.id == id ? { ...td, isDone } : td))
-    )
+  const doneTodo = async ({ id, isDone }: IDoneTodoRequest) => {
+    const newTodos = todos.map((td) => (td.id == id ? { ...td, isDone } : td))
+
+    if (!(await storeTodos(newTodos))) {
+      ToastAndroid.show('Erro ao donar todo.', ToastAndroid.LONG)
+      return false
+    }
+
+    setTodos(newTodos)
+    return true
   }
 
-  const removeTodo = (id: number) => {
+  const removeTodo = async (id: number) => {
     const newTodos = [...todos]
     const todoToRemoveIndex = newTodos.findIndex((td) => td.id == id)
     newTodos.splice(todoToRemoveIndex, 1)
 
+    if (!(await storeTodos(newTodos))) {
+      ToastAndroid.show('Erro ao remover todo.', ToastAndroid.LONG)
+      return false
+    }
+
     setTodos(newTodos)
+    return true
   }
 
   return (
