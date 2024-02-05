@@ -1,9 +1,9 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import Todo from '../@types/Todo'
 import { mainColorLight2, textColor, textColorDisabled } from '../theme/colors'
-import Checkbox from 'expo-checkbox'
 import TrashIcon from '../svgs/trash'
 import { useTodoContext } from '../provider/todoProvider'
+import Checkbox from './checkbox'
 
 const TodoItem: React.FC<Todo> = ({ id, name, isDone }) => {
   const { doneTodo, removeTodo } = useTodoContext()
@@ -11,10 +11,8 @@ const TodoItem: React.FC<Todo> = ({ id, name, isDone }) => {
   return (
     <View style={styles.container}>
       <Checkbox
-        style={[styles.cbbox, styles.side]}
-        color="#4EA8DE"
-        value={isDone}
-        onValueChange={(isDone) => doneTodo({ id, isDone })}
+        isChecked={isDone}
+        onPressHandler={(isDone) => doneTodo({ id, isDone })}
       />
       <Text
         style={[styles.txt, isDone && styles.txtDone]}
