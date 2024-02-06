@@ -1,15 +1,20 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { Text, StyleSheet, TouchableOpacity } from 'react-native'
 import Todo from '../@types/Todo'
 import { mainColorLight2, textColor, textColorDisabled } from '../theme/colors'
 import TrashIcon from '../svgs/trash'
 import { useTodoContext } from '../provider/todoProvider'
 import Checkbox from './checkbox'
+import Animated, { SlideInLeft, SlideOutLeft } from 'react-native-reanimated'
 
 const TodoItem: React.FC<Todo> = ({ id, name, isDone }) => {
   const { doneTodo, removeTodo } = useTodoContext()
 
   return (
-    <View style={styles.container}>
+    <Animated.View
+      entering={SlideInLeft}
+      exiting={SlideOutLeft}
+      style={styles.container}
+    >
       <Checkbox
         isChecked={isDone}
         onPressHandler={(isDone) => doneTodo({ id, isDone })}
@@ -26,7 +31,7 @@ const TodoItem: React.FC<Todo> = ({ id, name, isDone }) => {
       >
         <TrashIcon />
       </TouchableOpacity>
-    </View>
+    </Animated.View>
   )
 }
 
